@@ -1,0 +1,24 @@
+<!-- Хлебные крошки -->
+<nav aria-label="breadcrumb" class="content-card p-2 mb-2 reveal">
+    <ol class="breadcrumb mb-0">
+
+        <li class="breadcrumb-item">
+    <a href="{% if city.is_main %}/{% else %}{{ city.get_absolute_url }}{% endif %}">
+        {{ city.name }}
+    </a>
+</li>
+
+{% if parent and parent != page %}
+<li class="breadcrumb-item">
+    <a href="{{ parent.get_absolute_url }}">
+        {{ parent.title }}
+    </a>
+</li>
+{% endif %}
+
+        <li class="breadcrumb-item active">
+            {{ page.title }}
+        </li>
+
+    </ol>
+</nav>

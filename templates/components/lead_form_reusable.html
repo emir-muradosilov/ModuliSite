@@ -1,0 +1,62 @@
+<section class="content-card p-4 p-lg-5 mb-4 lead-form-wrapper">
+    <div class="text-center mb-4">
+        <h2 class="section-title mb-3">
+            <i class="bi bi-chat-right-dots me-2"></i>
+            Оставить заявку
+        </h2>
+        <p class="text-secondary mb-0">
+            Бесплатно рассчитаем стоимость работ
+            и свяжемся с вами в течение 15 минут
+        </p>
+    </div>
+
+    <div class="mx-auto">
+        <div class="bg-white rounded-4 p-4 p-md-5 shadow-lg border-0" style="background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);">
+            <form class="lead-form" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="city" value="{{ city.id }}">
+
+                <div class="mb-3 position-relative">
+                    <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"></i>
+                    <input type="text"
+                           name="name"
+                           class="form-control form-control-lg ps-5 rounded-3"
+                           placeholder="Ваше имя"
+                           required>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <i class="bi bi-telephone position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"></i>
+                    <input type="tel"
+                           name="phone"
+                           class="form-control form-control-lg ps-5 rounded-3 phone-input"
+                           placeholder="Телефон"
+                           required>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input policy-check" type="checkbox" name="policy_accept" required>
+                    <label class="form-check-label small text-secondary">
+                        Я даю согласие на обработку персональных данных и соглашаюсь
+                        с условиями
+                        <a href="/privacy-policy/" target="_blank" class="text-decoration-none">политики конфиденциальности</a>
+                        и
+                        <a href="/oferta/" target="_blank" class="text-decoration-none">договора оферты</a>
+                    </label>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm submit-btn" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none;">
+                        Отправить заявку
+                    </button>
+                </div>
+            </form>
+
+            <div class="lead-success d-none text-center py-3">
+                <i class="bi bi-check-circle-fill text-success fs-1 mb-2"></i>
+                <h5>Заявка отправлена!</h5>
+                <p class="mb-0 text-secondary">Мы свяжемся с вами в ближайшее время.</p>
+            </div>
+        </div>
+    </div>
+</section>

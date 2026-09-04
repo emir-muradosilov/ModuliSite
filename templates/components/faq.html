@@ -1,0 +1,106 @@
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+        Частые вопросы
+    </h2>
+
+    <div class="accordion" id="faqAccordion">
+
+        {% for faq_item in faqs|slice:":8" %}
+        <div class="accordion-item">
+
+            <h3 class="accordion-header">
+
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq{{ forloop.counter }}">
+
+                    {{ faq_item.question }}
+
+                </button>
+
+            </h3>
+
+            <div id="faq{{ forloop.counter }}"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#faqAccordion">
+
+                <div class="accordion-body">
+
+                    {{ faq_item.answer|truncatechars:250 }}
+
+                    <div class="mt-3">
+                        <a href="/{{ city.slug }}/faq/{{ faq_item.slug }}/">
+                            Читать подробнее
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+{% if faq.related_services.all %}
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+        Связанные услуги
+    </h2>
+
+    <div class="row g-3">
+
+        {% for service in faq.related_services.all %}
+
+        <div class="col-md-6">
+
+            <a href="{{ service.get_absolute_url }}"
+               class="text-decoration-none">
+
+                <div class="border rounded-4 p-4 h-100 bg-light">
+
+                    <h3 class="h6 text-dark mb-0">
+                        {{ service.title }}
+                    </h3>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+{% endif %}
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+
+    {% for faq_item in faqs|slice:":8" %}
+    {
+      "@type": "Question",
+      "name": "{{ faq_item.question|escapejs }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ faq_item.answer|striptags|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+
+  ]
+}
+</script>

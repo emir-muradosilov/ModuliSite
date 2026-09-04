@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block title %}
+{{ page.seo_title|default:page.title }}
+{% endblock %}
+
+{% block description %}
+{{ page.seo_description|default:"Профессиональные услуги в вашем городе." }}
+{% endblock %}
+
+{% block keywords %}
+{{ page.seo_keywords|default:"Производтво модульных зданий, Производтво блок контейнеров, модульное здание купить, модульное здание цена, блок контейнер купить, блок контейнер цена" }}
+{% endblock %}
+
+
+{% block extra_head %}
+
+
+{% if page.no_index or not page_should_index %}
+<meta name="robots" content="noindex,follow">
+{% endif %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+
+    {
+      "@type": "LocalBusiness",
+      "@id": "{{ canonical_url }}#business",
+
+      "name": "{{ contacts.company_name|default:city.name|escapejs }}",
+      "telephone": "{{ contacts.phone|escapejs }}",
+
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "{{ city.name|escapejs }}",
+        "streetAddress": "{{ contacts.address|escapejs }}"
+      },
+
+      "areaServed": "{{ city.name|escapejs }}",
+      "openingHours": "{{ contacts.working_hours|escapejs }}",
+      "priceRange": "{{ city.price_text|default:'₽₽'|escapejs }}"
+    },
+
+    {
+      "@type": "Service",
+      "@id": "{{ canonical_url }}#service",
+
+      "name": "{{ page.title|escapejs }}",
+      "description": "{{ page.seo_description|default:page.title|escapejs }}",
+
+      "provider": {
+        "@id": "{{ canonical_url }}#business"
+      },
+
+      "areaServed": {
+        "@type": "City",
+        "name": "{{ city.name|escapejs }}"
+      }
+
+      {% if reviews %},
+
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "{{ reviews|length }}"
+      },
+
+      "review": [
+
+        {% for review in reviews %}
+        {
+          "@type": "Review",
+
+          "author": {
+            "@type": "Person",
+            "name": "{{ review.author|escapejs }}"
+          },
+
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "{{ review.rating }}"
+          },
+
+          "reviewBody": "{{ review.text|striptags|escapejs }}"
+        }{% if not forloop.last %},{% endif %}
+
+        {% endfor %}
+
+      ]
+
+      {% endif %}
+
+    }
+
+  ]
+}
+</script>
+
+
+
+<link rel="canonical" href="{{ canonical_url }}">
+
+{% if not page_should_index %}
+<meta name="robots" content="noindex,follow">
+{% endif %}
+
+
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- Хлебные крошки -->
+    {% include 'components/bread_crumbs.html' %}
+
+<!-- Главный баннер -->
+
+    {% include 'components/hero.html' %}
+
+
+<!-- KPI. 4 блока под главным банером -->
+    {% include 'components/kpi.html' %}
+
+
+<!-- ПОДУСЛУГИ -->
+{% if children %}
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+        Подуслуги
+    </h2>
+
+    <div class="row g-3">
+
+        {% for child in children|slice:":3" %}
+        <div class="col-md-6 col-lg-4">
+
+            <a href="{{ child.get_absolute_url }}"
+               class="text-decoration-none">
+
+                <div class="border rounded-4 p-4 h-100 bg-light">
+
+                    <h3 class="h5 text-dark mb-2">
+                        {{ child.title }}
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+                        Подробная информация, цены и сроки выполнения.
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+{% endif %}
+
+
+<!-- SEO BLOCK  Особенности работ в городе-->
+{% if city_data %}
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+        Особенности работ в {{ city.in_city }}
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <p>
+                <strong>Районы работ:</strong><br>
+                {{ city_data.districts }}
+            </p>
+
+            <p>
+                <strong>Основные объекты:</strong><br>
+                {{ city_data.industrial_zones }}
+            </p>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <p>
+                <strong>Тип бетона:</strong><br>
+                {{ city_data.typical_concrete }}
+            </p>
+
+            <p>
+                <strong>Толщина:</strong><br>
+                {{ city_data.typical_thickness }}
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+{% endif %}
+
+
+{% include 'components/services/advantages.html' %}
+
+{% include 'components/services/work_steps.html' %}
+
+
+
+<!-- Каталог товаров -->
+{% include 'components/products_home.html' %}
+
+
+<!-- CONTENT -->
+
+
+<!-- content_template_block_1.html -->
+{% include 'components/service_page_component/content_template_block_1.html' %}
+
+<!-- content_template_block_2.html -->
+{% include 'components/service_page_component/content_template_block_2.html' %}
+
+
+<!-- PRICE -->
+{% include 'components/price.html' %}
+
+
+{% include 'components/lead_form_gorizont.html' %}
+
+
+<!-- content_template_block_3.html -->
+{% include 'components/service_page_component/content_template_block_3.html' %}
+
+<!-- content_template_block_4.html -->
+{% include 'components/service_page_component/content_template_block_4.html' %}
+
+
+
+
+
+
+<!-- SEO CLUSTER -->
+{% if seo_cluster %}
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+
+        Все услуги в {{ city.in_city }}
+
+    </h2>
+
+    <div class="d-flex flex-wrap gap-2">
+
+        {% for item in seo_cluster %}
+
+            <a href="{{ item.get_absolute_url }}"
+               class="btn btn-outline-secondary btn-sm">
+
+                {{ item.title }}
+
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+{% endif %}
+
+
+
+
+
+<!-- SEO-блок -->
+{% if portfolio_cases %}
+
+{% endif %}
+
+
+
+
+<!-- Random Первый position Блок -->
+
+<!-- Random position -->
+{% for section in page_sections %}
+
+    <!-- Portfolio -->
+
+    {% if section == 'portfolio_cases' %}
+        {% include 'components/portfolio_cases.html' %}
+    {% endif %}
+
+
+    <!-- Кейсы -->
+
+    {% if section == 'reviews' %}
+        {% include 'components/reviews.html' %}
+    {% endif %}
+
+
+    <!-- Сопутствующие услуги -->
+    {% if section == 'related_services' %}
+        {% include 'components/related_services.html' %}
+    {% endif %}
+
+    <!-- Why choose as -->
+    {% if section == 'seo_text' %}
+        {% include 'components/seo_blocks.html' %}
+    {% endif %}
+
+   
+
+
+{% endfor %}
+
+
+<!-- FAQ -->
+{% include 'components/faq.html' %}
+
+
+<!-- Random Последний position Блок -->
+
+
+
+<!-- CTA Contacts -->
+    {% include 'components/cta.html' %}
+
+
+
+
+
+
+
+
+
+{% include 'components/contacts.html' %}
+
+
+
+
+
+
+
+<!-- CITIES -->
+
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title mb-4">
+        Наши представители есть в городах:
+    </h2>
+
+    <div class="d-flex flex-wrap gap-2">
+
+{% for city in other_cities %}
+
+    <a href="{% if city.is_main %}/{% else %}/{{ city.slug }}/{% endif %}"
+       class="btn btn-outline-secondary btn-sm">
+        {{ city.name }}
+    </a>
+
+{% endfor %}
+
+    </div>
+
+</section>
+
+
+{% endblock %}

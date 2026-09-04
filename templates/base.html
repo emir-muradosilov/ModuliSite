@@ -1,0 +1,383 @@
+{% load compress %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    {% compress css %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ui.css' %}">
+
+
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endcompress %}
+
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+{% if site_settings.favicon %}
+<link rel="icon" type="image/x-icon" href="{{ site_settings.favicon.url }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ site_settings.favicon.url }}">
+<link rel="apple-touch-icon" href="{{ site_settings.favicon.url }}">
+{% endif %}
+
+    <!-- TITLE -->
+    <title>
+        {% block title %}
+            {% if page %}
+                {{ page.seo_title|default:page.title }}
+            {% elif city %}
+                {{ city.seo_title|default:city.in_city }}
+            {% else %}
+                {{ site_settings.homepage_title }}
+            {% endif %}
+        {% endblock %}
+    </title>
+
+    <!-- DESCRIPTION -->
+    <meta name="description"
+          content="{% block description %}
+              {% if page %}
+                  {{ page.seo_description }}
+              {% elif city %}
+                  {{ city.seo_description }}
+              {% else %}
+                  {{ site_settings.homepage_description }}
+              {% endif %}
+          {% endblock %}">
+
+    <!-- KEYWORDS -->
+    <meta name="keywords"
+          content="{% block keywords %}
+              {% if page %}
+                  {{ page.seo_keywords }}
+              {% elif city %}
+                  {{ city.seo_keywords }}
+              {% else %}
+                  {{ site_settings.homepage_keywords }}
+              {% endif %}
+          {% endblock %}">
+
+    <!-- ROBOTS -->
+    {% if page and page.no_index %}
+        <meta name="robots" content="noindex,nofollow">
+    {% else %}
+        <meta name="robots" content="index,follow">
+    {% endif %}
+
+    <!-- CANONICAL -->
+    {% if canonical_url %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="website">
+
+    <meta property="og:title" content="{% if page %} {{ page.seo_title|default:page.title }}{% elif city %}{{ city.seo_title|default:city.in_city }}{% else %}{{ site_settings.homepage_title }}{% endif %}">
+
+    <meta property="og:description" content="{% if page %}{{ page.seo_description }}{% elif city %}{{ city.seo_description }}{% else %}{{ site_settings.homepage_description }}{% endif %}">
+
+    <meta property="og:url"content="{{ request.build_absolute_uri }}">
+
+    <meta property="og:site_name"
+      content="{{ site_settings.site_name }}">
+
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title"content="{% if page %}{{ page.seo_title|default:page.title }}{% elif city %}{{ city.seo_title|default:city.in_city }}{% else %}Модульные здания и блок контейнеры{% endif %}">
+
+    <meta name="twitter:description"content="{% if page %}{{ page.seo_description }}{% elif city %}{{ city.seo_description }}{% else %}Производство Модульных зданий и блок контейнерой{% endif %}">
+
+    {% block extra_head %}{% endblock %}
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110889642', 'ym');
+
+    ym(110889642, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110889642" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+<meta name="yandex-verification" content="a0eff24d0e80cdfe" />
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-554YY2FW8L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-554YY2FW8L');
+</script>
+
+</head>
+
+{% include 'components/city_modal.html' %}
+<body>
+
+<div class="topbar py-2">
+    <div class="container d-flex justify-content-between">
+        <span>
+            Работаем по договору. Гарантия на услуги.
+        </span>
+        <span>
+            <div itemscope itemtype="http://schema.org/LocalBusiness">
+                <span>Бесплатная консультация. |</span>
+
+<a href="mailto:{{ contacts.email }}"
+               class="text-light text-decoration-none">
+                email: {{ contacts.email }}
+            </a> | 
+<a href="tel:{% firstof contacts.phone city.phone site_settings.default_phone %}"
+   class="text-light text-decoration-none"
+   itemprop="telephone">
+
+    тел.
+    {% firstof contacts.phone city.phone site_settings.default_phone %}
+
+</a>
+
+            </div>
+        </span>
+    </div>
+</div>
+
+<header class="site-header">
+
+
+<nav class="site-nav">
+
+    <!-- СТРОКА 1 -->
+
+    <div class="container">
+
+        <div class="header-top">
+
+
+
+
+
+            <div class="header-left">
+
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{% if city %}/{{ city.slug }}/{% else %}/{% endif %}">
+                    {% if site_settings.logo %}
+                    <img src="{{ site_settings.logo.url }}"
+                         alt="{{ site_settings.site_name }}"
+                         class="site-logo">
+                    {% endif %}
+                    <span>
+                        {{ site_settings.site_name }}
+                    </span>
+                </a>
+
+                {% if city %}
+                <button class="btn btn-outline-secondary btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#cityModal">
+
+                    📍 {{ city.name }}
+
+                </button>
+                {% else %}
+                <button class="btn btn-outline-secondary btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#cityModal">
+
+                    📍 Выберите город
+
+                </button>
+                {% endif %}
+
+            </div>
+
+<button class="btn btn-outline-secondary d-lg-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNavbar">
+
+    ☰ Меню
+
+</button>
+
+        </div>
+
+    </div>
+
+
+<!--Menu-->
+<div class="header-pages d-none d-lg-flex">
+
+    {% for item in header_menu %}
+
+        <a href="/{{ menu_city.slug }}/{{ item.slug }}/"
+           class="nav-link">
+
+            {{ item.title }}
+
+        </a>
+
+    {% endfor %}
+
+</div>
+
+
+
+    <!-- СТРОКА 2 -->
+
+    <div class="border-top">
+
+        <div class="container">
+
+<div class="collapse navbar-collapse" id="mainNavbar">
+
+                <div class="header-menu">
+
+                    <div class="header-services">
+
+                        {% for service in menu_services %}
+
+                        <div class="dropdown d-flex align-items-center">
+
+                            <a class="nav-link"
+                               href="{{ service.get_absolute_url }}">
+
+                                {{ service.title }}
+
+                            </a>
+
+                            {% if service.children.exists %}
+
+                            <button class="btn btn-sm dropdown-toggle border-0"
+                                    type="button"
+                                    data-bs-toggle="dropdown">
+                            </button>
+
+                            <ul class="dropdown-menu">
+
+                                {% for child in service.children.all %}
+                                {% if child.is_published and child.show_in_menu %}
+
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       href="{{ child.get_absolute_url }}">
+
+                                        {{ child.title }}
+
+                                    </a>
+
+                                </li>
+
+                                {% endif %}
+                                {% endfor %}
+
+                            </ul>
+
+                            {% endif %}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="header-cta">
+
+                        <button class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#leadModal">
+
+                            Оставить заявку
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+    
+
+</header>
+
+<main class="container my-3 my-lg-3">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer py-4 mt-5">
+    <div class="container d-flex justify-content-between">
+        <small class="text-muted">© {% now "Y" %} Услуги по всей России</small>
+        <small class="text-muted">Модульные здания и блок контейнеры</small>
+    </div>
+</footer>
+
+
+<!-- MOBILE CTA -->
+<div class="mobile-cta d-lg-none">
+
+<button class="mobile-cta d-lg-none"
+        data-bs-toggle="modal"
+        data-bs-target="#leadModal">
+    Оставить заявку
+</button>
+
+</div>
+
+
+
+<div class="floating-cta">
+
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#leadModal">
+        ✉
+    </button>
+
+</div>
+
+
+{% include 'components/lead_modal.html' %}
+<script defer src="{% static 'js/phone-mask.js' %}"></script>
+<script defer src="{% static 'js/lead.js' %}"></script>
+<script defer src="{% static 'js/ui.js' %}"></script>
+<script defer src="{% static 'js/city-modal.js' %}"></script>
+</body>
+</html>

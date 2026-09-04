@@ -1,0 +1,26 @@
+{% if site_settings.homepage_text_block_3 %}
+<section class="content-card p-4 p-lg-5 mb-4">
+    <div class="row align-items-center g-4">
+        <!-- Блок с текстом: на мобильных снизу (order-2), на больших экранах справа (order-lg-2) -->
+        <div class="col-lg-6 order-lg-2 order-2">
+            <!--title-->
+            {% if site_settings.content_title_block_3 %}
+                <h2 class="section-title mb-3">{{ site_settings.content_title_block_3|safe }}</h2>
+            {% endif %}
+            <!--text-->
+            {% if site_settings.homepage_text_block_3 %}
+                <div class="content-text">{{ site_settings.homepage_text_block_3|safe|linebreaks }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Блок с картинкой: на мобильных сверху (order-1), на больших экранах слева (order-lg-1) -->
+        <div class="col-lg-6 order-lg-1 order-1">
+            <!--img-->
+            {% if site_settings.img_homepage_block_3 %}
+                <img src="{{ site_settings.img_homepage_block_3.url }}" class="img-fluid rounded-3 shadow-sm w-100" alt="{{ site_settings.img_homepage_alt_block_3|default:'Изображение' }}">
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endif %}

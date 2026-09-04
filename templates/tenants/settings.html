@@ -1,0 +1,57 @@
+{% extends 'tenants/base_tenant.html' %}
+
+{% block content %}
+<h1>Настройки — {{ city_name }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+<div class="row">
+
+    {% for field in form %}
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+
+            {{ field.label }}
+
+        </label>
+
+        {{ field }}
+
+        {% if field.errors %}
+            <div class="text-danger">
+
+                {{ field.errors }}
+
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+    <button type="submit">Сохранить</button>
+</form>
+
+<br>
+
+<!--
+<h3>Подключение Telegram - На данный момент тестируется!</h3>
+
+<p>1. Откройте нашего бота в Telegram</p>
+<p>2. Нажмите /start</p>
+<p>3. Перейдите по ссылке:</p>
+
+<p>
+https://api.telegram.org/botВАШ_ТОКЕН/getUpdates
+</p>
+
+<p>4. Найдите "chat": { "id": XXXXX }</p>
+<p>5. Вставьте сюда</p>
+-->
+
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+
+<!-- Например, блок 1 -->
+
+<section class="content-card p-4 p-lg-5 mb-4">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-6 order-lg-1 order-2">
+
+            <h2 class="section-title mb-4">
+            {% if page.title_template_block_4 %}
+            <div class="content-text">
+                {{ page.title_template_block_4|safe|linebreaks }}
+            </div>
+            {% endif %}
+            </h2>
+
+        {% if page.img_template_block_4 %}
+            <img src="{{ page.img_template_block_4.url }}"
+                    class="img-fluid rounded-3 shadow-sm w-100"
+                    alt="{{ city.img_template_alt_block_4|default:'Изображение' }}">
+        {% endif %}
+
+        </div>
+    <div class="col-lg-6 order-lg-2 order-1">
+        {% if page.content_template_block_4 %}
+            <div class="content-text">
+                {{ page.content_template_block_4|safe|linebreaks }}
+            </div>
+        {% endif %}
+        </div>
+</section>

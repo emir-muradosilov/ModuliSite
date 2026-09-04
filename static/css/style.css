@@ -1,0 +1,163 @@
+/* Стили для контентных блоков */
+.content-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+.content-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+.section-title {
+    font-weight: 700;
+    color: #1a1a2e;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    border-radius: 2px;
+}
+
+.text-center .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.content-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #4a4a6a;
+}
+
+.content-text p {
+    margin-bottom: 0.8rem;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 991.98px) {
+    .content-card {
+        padding: 1.5rem !important;
+    }
+    .section-title {
+        font-size: 1.5rem;
+    }
+    .content-text {
+        font-size: 0.95rem;
+    }
+}
+
+/* =============================================
+   БЛОК: ИЗОБРАЖЕНИЕ СВЕРХУ, ТЕКСТ СНИЗУ
+   ============================================= */
+
+.image-top-block {
+    background: #ffffff;
+    border-radius: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-top-block:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.image-top-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.image-top-wrapper {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    background: #f8f9fa; /* фон на время загрузки */
+}
+
+.image-top-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.image-top-block:hover .image-top-img {
+    transform: scale(1.02);
+}
+
+/* Заголовок */
+.image-top-block .section-title {
+    font-weight: 700;
+    color: #1a1a2e;
+    position: relative;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.image-top-block .section-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 4px;
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    border-radius: 4px;
+}
+
+/* Текст */
+.image-top-block .content-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a4a6a;
+}
+
+.image-top-block .content-text p {
+    margin-bottom: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .image-top-block {
+        padding: 1.5rem !important;
+    }
+
+    .image-top-img {
+        max-height: 280px;
+    }
+
+    .image-top-block .section-title {
+        font-size: 1.5rem;
+    }
+
+    .image-top-block .content-text {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-top-img {
+        max-height: 200px;
+    }
+}
+
+
+
+
+.card-img-top-fixed {
+    width: 100%;
+    height: 200px;          /* задайте нужную высоту */
+    object-fit: cover;      /* обрезает картинку, сохраняя пропорции */
+}

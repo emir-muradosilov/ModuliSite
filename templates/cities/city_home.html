@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ city.seo_title|default:"Производтво модульных зданий, блок контейнеров и металлоконструкций" }}{% endblock %}
+{% block description %}{{ city.seo_description|default:"Производтво модульных зданий, блок контейнеров и металлоконструкций. Быстое согласование, производство, доставка и монтаж под ключ. Работаем быстро, аккуратно и с гарантией." }}{% endblock %}
+{% block keywords %}{{ city.seo_keywords|default:"Производтво модульных зданий, Производтво блок контейнеров, модульное здание купить, модульное здание цена, блок контейнер купить, блок контейнер цена" }}{% endblock %}
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ city.seo_title|default:city.name|escapejs }}",
+  "address": "{{ city.address|default:'Россия'|escapejs }}",
+  "areaServed": "{{ city.name|escapejs }}",
+  "telephone": "{{ city.phone|default:''|escapejs }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+
+<!-- Главный баннер -->
+
+{% include 'components/hero_city_home.html' %}
+
+
+
+
+
+{% include 'components/four_block.html' %}
+
+
+<!-- Выполняемые работы -->
+{% include 'components/Work_type_home.html' %}
+
+
+
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title">
+        {{ city.homepage_text_h2|safe }}
+    </h2>
+    <div class="row g-3">
+{{ city.homepage_text|safe }}
+</div>
+</section>
+
+
+
+<section class="content-card p-4 p-lg-5 mb-4">
+
+    <h2 class="section-title">
+        Популярные услуги в {{ city.in_city }}
+    </h2>
+
+    <div class="row g-3 mb-4">
+
+        {% for service_page in main_services %}
+
+        <div class="col-md-6 col-lg-4">
+
+            <a href="{{ service_page.get_absolute_url }}"
+               class="text-decoration-none">
+
+                <div class="service-card h-100">
+
+                    <div class="card-body">
+
+                        <h3 class="h5 mb-2 text-dark">
+                            {{ service_page.title }}
+                        </h3>
+
+                        <p class="mb-0 text-secondary">
+                            Цены, сроки выполнения работ и консультация специалиста.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <p class="mb-0 text-secondary">
+                Популярные услуги пока не настроены.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <button
+        class="btn btn-primary btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#leadModal">
+
+        Оставить заявку
+
+    </button>
+
+</section>
+
+
+
+
+
+
+<!-- Расценки на работы -->
+
+{% if site_settings.price_tables.all %}
+<div class="content-card p-4 p-lg-5 mb-4 row">
+    {% for table in site_settings.price_tables.all %}
+    <div class="col-lg-6">
+        <section class="content-card p-4 h-100">
+            <h2 class="section-title mb-4">
+                {{ table.title }}
+            </h2>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{ table.service_column_name }}
+                            </th>
+                            {% if table.show_unit %}
+                            <th>
+                                {{ table.unit_column_name }}
+                            </th>
+                            {% endif %}
+
+                            {% if table.show_price %}
+                            <th>
+                                {{ table.price_column_name }}
+                            </th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in table.items.all %}
+                        <tr>
+                            <td>
+                                {{ item.service }}
+                            </td>
+                            {% if table.show_unit %}
+                            <td>
+                                {{ item.unit }}
+                            </td>
+                            {% endif %}
+                            {% if table.show_price %}
+                            <td>
+                                {{ item.price }}
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
+
+
+<section class="content-card p-4 p-lg-5 mb-4">
+<h2 class="section-title">{{ city.choose_as_h2|safe }}</h2>
+<div class="row g-3">
+{{ city.choose_as|safe }}
+</div>
+</section>
+
+
+
+{% include 'components/lead_form_gorizont.html' %}
+
+
+
+
+
+<section class="content-card p-4 p-lg-5 mb-4">
+<h2 class="section-title">{{ city.useful_h2|safe }}</h2>
+<div class="row g-3">
+{{ city.useful|safe  }}
+</div>
+</section>
+
+
+
+<section class="content-card p-4 p-lg-5 mb-4">
+    <h2 class="section-title">{{ city.homepage_advantages_h2|safe }}</h2>
+        <div class="row g-3">
+{{ city.homepage_advantages|safe  }}
+</div>
+</section>
+
+
+<!-- Примеры работ -->
+ <section class="content-card p-4 p-lg-5 mb-4">
+    <h2 class="section-title mb-4">
+        Последние выполненные объекты
+    </h2>
+    <div class="row g-3">
+        {% for case in portfolio_cases %}
+        <div class="col-md-6 col-lg-4">
+            <a href="{{ case.get_absolute_url }}"
+               class="text-decoration-none">
+                <div class="border rounded-4 p-4 h-100 bg-light">
+                    {% if case.image %}
+                        <img
+                            src="{{ case.image.url }}"
+                            alt="{{ case.title }}"
+                            title="{{ case.title }}"
+                            loading="lazy"
+                            class="img-fluid rounded-3 mb-3">
+                        {% else %}
+                        <img
+                            src="/media/defaults/no-image.webp"
+                            alt="{{ case.title }}"
+                            loading="lazy">
+                    {% endif %}
+
+                    <h3 class="h5 text-dark mb-2">
+                        {{ case.title }}
+                    </h3>
+
+                    <p class="text-secondary mb-3">
+                        {{ case.short_description|truncatechars:120 }}
+                    </p>
+
+                    {% if case.address %}
+                    <div class="small text-muted">
+                        📍 {{ case.address }}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- Отзывы -->
+{% if reviews %}
+<section class="content-card p-4 p-lg-5 mb-4">
+    <h2 class="section-title mb-4">
+        Отзывы клиентов
+    </h2>
+    <div class="row g-4">
+        {% for review in reviews %}
+        <div class="col-md-6">
+            <div class="border rounded-4 p-4 h-100 bg-light">
+                <div class="mb-2">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            ⭐
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p class="mb-3">
+                    {{ review.text }}
+                </p>
+                <strong>
+                    {{ review.author }}
+                </strong>
+                {% if review.city %}
+                <div class="small text-muted">
+                    {{ review.city.name }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div><br>
+        <div class="col-md-6">
+            <div class="border rounded-4 p-4 h-100 bg-light">
+                <div class="mb-2">
+                    {% for i in "12345" %}⭐{% endfor %}
+                </div>
+                <p class="mb-3">
+                    Делал ремонт - перепланировку в квартире. Заказывал работу по спилу стены. Все выполнены аккуратно и в срок, смета как и договаривалиь, не изменилась. Рекомендую!
+                 </p>
+                                 <strong>Андрей С.</strong><p class="mb-0 muted"></p>
+                                 <p>{{ city.name }}</p>
+            </div><br>
+        </div>
+</section>
+{% endif %}
+
+
+
+<!-- FAQ -->
+{% include 'components/faq.html' %}
+
+
+<!-- FAQ -->
+{% include 'components/global_faq.html' %}
+
+
+<!-- Lead -->
+{% include 'components/contacts.html' %}
+
+
+<!-- CITIES -->
+
+<section class="content-card p-4 p-lg-5 mb-4">
+    <h2 class="section-title mb-4">
+        Наши представители есть в городах:
+    </h2>
+    <div class="d-flex flex-wrap gap-2">
+{% for city in cities %}
+    <a href="{% if city.is_main %}/{% else %}/{{ city.slug }}/{% endif %}"
+       class="btn btn-outline-secondary btn-sm">
+        {{ city.name }}
+    </a>
+
+{% endfor %}
+    </div>
+</section>
+
+{% endblock %}

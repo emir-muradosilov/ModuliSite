@@ -1,0 +1,26 @@
+
+
+<!-- Например, блок 2 -->
+
+<section class="content-card p-4 p-lg-5 mb-4">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+            {% if city.img_useful %}
+                <img src="{{ city.img_useful.url }}"
+                     class="img-fluid rounded-3 shadow-sm w-100"
+                     alt="{{ city.img_useful_alt|default:'Изображение' }}">
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            {% if city.useful_h2 %}
+                <h2 class="section-title mb-3">{{ city.useful_h2 }}</h2>
+            {% endif %}
+            {% if city.useful %}
+                <div class="content-text">
+                    {{ city.useful|safe|linebreaks }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+

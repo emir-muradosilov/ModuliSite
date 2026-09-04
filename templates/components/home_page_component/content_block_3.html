@@ -1,0 +1,23 @@
+
+
+<!-- Например, блок 3 -->
+
+<section class="content-card p-4 p-lg-5 mb-4 text-center">
+        {% if city.homepage_text_h2 %}
+        <h2 class="section-title mb-3">{{ city.homepage_text_h2 }}</h2>
+    {% endif %}
+    {% if city.homepage_text_img %}
+        <div class="mb-4">
+            <img src="{{ city.homepage_text_img.url }}"
+                 class="img-fluid rounded-3 shadow-sm"
+                 style="max-height: 400px; width: auto;"
+                 alt="{{ city.homepage_text_img_alt|default:'Изображение' }}">
+        </div>
+    {% endif %}
+
+    {% if city.homepage_text %}
+        <div class="content-text mx-auto text-start" style="max-width: 1000px;">
+            {{ city.homepage_text|safe|linebreaks }}
+        </div>
+    {% endif %}
+</section>

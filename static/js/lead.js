@@ -38,23 +38,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (data.success) {
 try {
-                        // Отправляем цель в Яндекс.Метрику
+    // Отправляем цель в Яндекс.Метрику
     if (typeof ym !== 'undefined') {
-        ym(110889642, 'reachGoal', 'ZAYAVKA');
+        ym(75517165, 'reachGoal', 'ZAYAVKA');
         // Можно передать дополнительные параметры, например город:
         // ym(XXXXXX, 'reachGoal', 'lead_sent', { city: cityName });
     }
     // ====== ОТПРАВКА В GOOGLE ANALYTICS 4 ======
     if (typeof gtag !== 'undefined') {
-        gtag('event', 'form_submit', {
+        gtag('event', 'site_lead', {
             'event_category': 'lead',
             'event_label': 'заявка'
         });
-        console.log('Событие form_submit отправлено в GA4');
+        console.log('Событие site_lead отправлено в GA4');
     }
 } catch (e) {
     console.warn('GA4 недоступен:', e);
 }
+
 
                     // Скрываем форму, показываем success
                     const wrapper = form.closest('.lead-form-wrapper');

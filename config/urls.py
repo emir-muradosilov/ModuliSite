@@ -30,6 +30,7 @@ from pages.sitemaps import (
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.views.generic import TemplateView
 
 
 sitemaps = {
@@ -46,6 +47,9 @@ urlpatterns = [
     
     path('', include('leads.urls')),
 
+    path('privacy-policy/', TemplateView.as_view(template_name='privacy_policy.html'), name='privacy_policy'),
+    path('oferta/', TemplateView.as_view(template_name='oferta.html'), name='oferta'),
+
     path('', include('pages.urls')),
     path('', include('cities.urls')),
 
@@ -53,6 +57,8 @@ urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     
     path("favicon.ico", favicon_view, name="favicon"),
+
+
 ]
 
 urlpatterns += static(

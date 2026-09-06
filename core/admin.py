@@ -14,6 +14,9 @@ from .models import Category, Product
 from django.urls import reverse
 from django.utils.html import format_html
 
+from django.db import models
+from django import forms
+
 
 class PriceTableItemInline(admin.TabularInline):
 
@@ -68,6 +71,23 @@ class ProductInline(admin.TabularInline):
 class SiteSettingsAdmin(admin.ModelAdmin):
 
 
+    # АВТО-РАСШИРЕНИЕ ПОЛЕЙ ДЛЯ ЭТОЙ МОДЕЛИ
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control'
+            })
+        },
+        models.TextField: {
+            'widget': forms.Textarea(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control',
+                'rows': 4  # Можно заодно настроить высоту текстовых окон
+            })
+        },
+    }
+
     fieldsets = (
         ( 'Основные', {'fields': ('site_name', 'default_phone', 'default_email', 'logo', 'favicon', 'hero_background',)}),
         ('SEO главной страницы',{ 'fields': (
@@ -94,10 +114,30 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         return not SiteSettings.objects.exists()
 
 
+    
+
+
 
 
 @admin.register(WorkType)
 class WorkTypeAdmin(admin.ModelAdmin):
+
+    # АВТО-РАСШИРЕНИЕ ПОЛЕЙ ДЛЯ ЭТОЙ МОДЕЛИ
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control'
+            })
+        },
+        models.TextField: {
+            'widget': forms.Textarea(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control',
+                'rows': 4  # Можно заодно настроить высоту текстовых окон
+            })
+        },
+    }
 
     list_display = (
         'title',

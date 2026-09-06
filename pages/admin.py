@@ -7,6 +7,9 @@ from cities.models import City
 from core.models import Product
 
 
+from django.db import models
+from django import forms
+
 
 @admin.register(CityData)
 class CityDataAdmin(admin.ModelAdmin):
@@ -31,6 +34,23 @@ class ServicePriceInline(admin.TabularInline):
 
 @admin.register(ServicePage)
 class ServicePageAdmin(admin.ModelAdmin):
+
+        # АВТО-РАСШИРЕНИЕ ПОЛЕЙ ДЛЯ ЭТОЙ МОДЕЛИ
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control'
+            })
+        },
+        models.TextField: {
+            'widget': forms.Textarea(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control',
+                'rows': 4  # Можно заодно настроить высоту текстовых окон
+            })
+        },
+    }
 
     list_display = (
         'title',
@@ -236,6 +256,24 @@ class ProductInline(admin.TabularInline):
 
 @admin.register(ServiceTemplate)
 class ServiceTemplateAdmin(admin.ModelAdmin):
+
+    # АВТО-РАСШИРЕНИЕ ПОЛЕЙ ДЛЯ ЭТОЙ МОДЕЛИ
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control'
+            })
+        },
+        models.TextField: {
+            'widget': forms.Textarea(attrs={
+                'style': 'width: 100%; min-width: 450px; max-width: 850px;',
+                'class': 'form-control',
+                'rows': 4  # Можно заодно настроить высоту текстовых окон
+            })
+        },
+    }
+    
 
     list_display = ('title_template', 'slug', 'parent', 'show_in_menu', 'is_main')
     list_display_links = ('title_template',)

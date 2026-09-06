@@ -270,12 +270,12 @@ SECURE_PROXY_SSL_HEADER = (
 
 USE_X_FORWARDED_HOST = True
 
-'''
+
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
     default=""
 ).split(",")
-'''
+
 #CSRF_TRUSTED_ORIGINS=https://site.ru,https://www.site.ru
 
 
